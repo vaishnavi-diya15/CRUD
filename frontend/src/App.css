@@ -5,6 +5,11 @@
   display: "grid",
 }
 .Header{
+  font-size: 50px;
+  text-align: center;
+  margin: 0; 
+  text-decoration: underline;
+  color: rgb(137, 103, 247);
 }
 .Table{
   font-size: 20px;
