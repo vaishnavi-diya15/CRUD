@@ -1,9 +1,15 @@
 var mysql = require("mysql2");
 var http = require("http");
 var url = require("url");
+<<<<<<< HEAD
 http.createServer(function (req, res) {
     res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
     res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+=======
+http.createServer(function(req,res){
+    res.setHeader("Access-Control-Allow-Origin", "http://localhost:8080"); 
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE"); 
+>>>>>>> 6f6effa3b91e80ef468a706339021a6477fee4b6
     res.setHeader("Access-Control-Allow-Headers", "Content-Type");
     res.writeHead(200, { "Content-Type": "application/json" });
     con.connect(function (err) {
@@ -116,9 +122,17 @@ http.createServer(function (req, res) {
         }
     })
 }).listen(8080);
+
 var con = mysql.createConnection({
+<<<<<<< HEAD
     host: "localhost",
     user: "root",
     password: "@123Diya@",
     database: "node"
+=======
+    host:"localhost",
+    user:"root",
+    password:"@123diya@",
+    database:"node"
+>>>>>>> 6f6effa3b91e80ef468a706339021a6477fee4b6
 })
