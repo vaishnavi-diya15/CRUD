@@ -1,0 +1,49 @@
+version: "3.8"
+
+services:
+  db:
+    image: mysql:8.0.34
+    environment:
+      MYSQL_ROOT_PASSWORD: "@123Diya@"
+      MYSQL_DATABASE: "node"
+      MYSQL_USER: "root"
+      MYSQL_PASSWORD: "@123Diya@"
+    volumes:
+      - db-data:/var/lib/mysql
+    ports:
+      - "3308:3306"  # Expose MySQL on port 3306
+    networks:
+      - app-network
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend  # Path to the backend Dockerfile
+    volumes:
+      - ./backend:/app  # Mount the backend source code (for live development, optional)
+    ports:
+      - "8080:8080"  # Expose backend on port 8080
+    depends_on:
+      - db  # Ensure that the MySQL database is up before the backend
+    networks:
+      - app-network
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend  # Path to the frontend Dockerfile
+    volumes:
+      - ./frontend:/app  # Mount the frontend source code (for live development, optional)
+    ports:
+      - "81:80"  # Expose frontend on port 80 (Nginx)
+    depends_on:
+      - backend  # Ensure that the backend API is up before the frontend
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  db-data:  # Persistent storage for MySQL data
