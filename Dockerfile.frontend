@@ -1,20 +1,29 @@
-# Use the official Node.js image as the base image
-FROM node:20
+# Stage 1: Build the React app
+FROM node:20 AS build
 
-# Set the working directory for the backend
+# Set the working directory for the frontend
 WORKDIR /app
 
-# Copy the backend package.json and package-lock.json files
-COPY backend/package*.json ./
+# Copy the frontend package.json and package-lock.json files
+COPY frontend/package*.json ./
 
-# Install backend dependencies
+# Install frontend dependencies
 RUN npm install
 
-# Copy the backend code into the container
-COPY backend/ .
+# Copy the React code into the container
+COPY frontend/ .
 
-# Expose the backend API on port 8080
-EXPOSE 8080
+# Build the React app for production
+RUN npm run build
 
-# Run the Node.js backend server
-CMD ["node", "server.js"]
+# Stage 2: Use Nginx to serve the static files
+FROM nginx:alpine
+
+# Copy the built React app from the build stage to Nginx's public folder
+COPY --from=build /app/build /usr/share/nginx/html
+
+# Expose port 80 (Nginx default port)
+EXPOSE 80
+
+# Start Nginx in the foreground
+CMD ["nginx", "-g", "daemon off;"]
